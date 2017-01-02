@@ -62,11 +62,10 @@ def sendEmail(product, graph, EMAIL_CREDENTIALS):
     msg.attach(msgText)
  
     # Embed image
-    image = open(graph, 'rb')
-    msgImage = MIMEImage(image.read())
-    msgImage.add_header('Content-ID', '<image>')
-    msg.attach(msgImage)
-    image.close()     
+    with open(graph, 'rb') as image:
+        msgImage = MIMEImage(image.read())
+        msgImage.add_header('Content-ID', '<image>')
+        msg.attach(msgImage)
 
     # Send email
     server = smtplib.SMTP('smtp.gmail.com', 587)
@@ -91,7 +90,7 @@ def readPrices(csvFile):
             column = row[0].split('|')
             priceData[column[0]] = row[1:]
             targetData[column[0]] = column[1]
-    infile.close()        
+           
     return priceData, targetData
     
 def updatePrices(newPriceData, oldPriceData):
@@ -110,7 +109,7 @@ def writePrices(newPriceData, targetData, csvFile):
         for product in newPriceData:
             target = targetData[product]
             writer.writerow([product+'|'+target]+newPriceData[product])
-        outfile.close()         
+                
 
 def getPrice(productID, AWS_CREDENTIALS):
     amazon = AmazonAPI(AWS_CREDENTIALS[0], AWS_CREDENTIALS[1], AWS_CREDENTIALS[2])
@@ -132,7 +131,7 @@ def addProduct(productID, csvFile, alertWhen, alertType, AWS_CREDENTIALS):
     with open(csvFile, 'a') as outfile:
         writer = csv.writer(outfile)
         writer.writerow([productID+'|'+str(alertPrice)]) 
-        outfile.close()
+        
 
 def dailyScan(productIDs, csvFile, AWS_CREDENTIALS, EMAIL_CREDENTIALS):
     prices, targets = readPrices(csvFile)
