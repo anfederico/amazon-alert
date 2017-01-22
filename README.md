@@ -14,6 +14,9 @@ To do this you'll need two free accounts
 1. Amazon Web Services
 2. Google Mail
 ```
+<i><a href='https://affiliate-program.amazon.com/gp/advertising/api/detail/main.html'> 
+Sgn up for a product advertising account after you create your AWS credentials</a></i>
+
 ## Code Examples
 
 #### Run Once for Initial Setup
